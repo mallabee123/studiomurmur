@@ -170,8 +170,9 @@
             transition: background 0.2s ease;
         }
 
-        tbody tr.clickable-row:hover {
-            background: #f8f8f8;
+        tbody tr.clickable-row:hover,
+        tbody tr.clickable-row.hover-active {
+            background: #ffd9c8;
         }
 
         tbody tr.clickable-row td {
@@ -495,17 +496,40 @@ cal positioning for partnerships, clients, and community stakeholders.</p>
 
         // Table row dropdown functionality
         document.querySelectorAll('.clickable-row').forEach(row => {
-            row.addEventListener('click', () => {
-                const dropdown = row.nextElementSibling;
-                
+            const dropdown = row.nextElementSibling;
+            let hideTimeout;
+
+            const showDropdown = () => {
+                clearTimeout(hideTimeout);
+
                 // Close all other dropdowns
                 document.querySelectorAll('.dropdown-row').forEach(dr => {
-                    if (dr !== dropdown) dr.classList.remove('active');
+                    if (dr !== dropdown) {
+                        dr.classList.remove('active');
+                        dr.previousElementSibling?.classList.remove('hover-active');
+                    }
                 });
 
-                // Toggle this dropdown
-                dropdown.classList.toggle('active');
+                dropdown.classList.add('active');
+                row.classList.add('hover-active');
+            };
+
+            const hideDropdown = () => {
+                hideTimeout = setTimeout(() => {
+                    dropdown.classList.remove('active');
+                    row.classList.remove('hover-active');
+                }, 150);
+            };
+
+            row.addEventListener('mouseenter', showDropdown);
+            row.addEventListener('mouseleave', hideDropdown);
+
+            dropdown.addEventListener('mouseenter', () => {
+                clearTimeout(hideTimeout);
+                showDropdown();
             });
+
+            dropdown.addEventListener('mouseleave', hideDropdown);
         });
     </script>
 </body>
