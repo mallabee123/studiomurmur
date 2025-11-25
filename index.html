@@ -170,8 +170,9 @@
             transition: background 0.2s ease;
         }
 
-        tbody tr.clickable-row:hover {
-            background: #f8f8f8;
+        tbody tr.clickable-row:hover,
+        tbody tr.clickable-row.hover-active {
+            background: #fff0e8;
         }
 
         tbody tr.clickable-row td {
@@ -186,6 +187,7 @@
         tbody tr.clickable-row td:first-child {
             width: 80px;
             color: #666;
+            padding-left: 20px;
         }
 
         tbody tr.clickable-row td:nth-child(2) {
@@ -326,37 +328,37 @@
             <!-- About Section -->
             <div id="about" class="content-section active">
                 <p>
-                    <span class="lato-black">Studio murmur</span> reflects my desire to work with my clients in their raw form and build something together, like an artist with white walls and wooden shelves who exposes their works and materials in a way that highlights their distinctive and authentic light.
+                    <span class="lato-black">Studio murmur</span> is built on the joy of working side-by-side with clients from the first idea to the final delivery. I see the work like an artist's studio—materials on the table, walls ready for sketches, and space for honest collaboration that lets each project shine in its own light.
                 </p>
-                
+
                 <p>
-                    I always wanted to be an artisan or a builder. Instead, I studied classical history, finance, and heritage preservation. I've mastered research and writing, financial psychology and market theories and the processes behind what we choose to leave for future generations. I use what I learned as an entrepreneur and urban pioneer to help my clients achieve sustainable growth that is aligned with their core values.
+                    My path runs through classical history, finance, and heritage preservation. That mix sharpened my research skills, deepened my understanding of markets and financial psychology, and taught me how we decide what to protect for future generations. As an entrepreneur and urban pioneer, I use this lens to help clients build sustainable growth rooted in their own values.
                 </p>
-                
+
                 <p>
-                    My own values, which show up in all levels of my work, are authenticity, collaboration, stewardship, professional ethics, and support for ecological regeneration.
+                    You will see my values—authenticity, collaboration, stewardship, professional ethics, and ecological regeneration—at every stage of our work together.
                 </p>
-                
+
                 <p><span class="lato-black">I offer tailored support in:</span></p>
-                
+
                 <p>
-                    Financing and Grant Applications (public and private), even when you don't know how to communicate your project yet!
+                    Financing and grant applications (public and private), especially when your project still needs clear language.
                 </p>
-                
+
                 <p>
-                    Strategic planning, where marrying the bottom line and social impact are key
+                    Strategic planning that aligns the bottom line with social impact.
                 </p>
-                
+
                 <p>
-                    Governance planning, for complex projects big and small in the non-profit sector
+                    Governance planning for complex projects of any size in the non-profit sector.
                 </p>
-                
+
                 <p>
-                    Modernizing and improving your organization's financial and administrative tools - especially if you dislike the mere mention of it.
+                    Modernizing and improving financial and administrative tools—particularly if you dislike the topic and want it handled with care.
                 </p>
-                
+
                 <p>
-                    <span class="lato-black">Before founding Studio Murmur</span>, I worked in Montréal's financial sector as a portfolio advisor. After completing a Master's in Conservation with a focus on temporary use, I contributed to several pioneering initiatives in urban innovation and heritage. I co-founded the Festival Vivre le Patrimoine (2015–2016), a citizen-led event that showcased Montréal's heritage through a living and inclusive lens. In 2016, I co-founded Entremise, a social-economy non-profit that brought temporary use into Montréal and Québec public policy. As Director General of Entremise, I successfully developed a sustainable hybrid model for growth and co-led the Young Project (2017–2018), the first proof of concept for temporary use in collaboration with the City of Montréal, which enabled more than 35 organizations to occupy a former public warehouse in Griffintown. In 2017, I coordinated the Conseil jeunesse de Montréal's strategic brief on vacant space and co-organized the Symposium on Temporary Uses, both of which equipped institutional and cultural stakeholders with practical tools. From 2019 to 2021, I also contributed to the creation of Espace Ville Autrement, a flagship site for urban experimentation on the UQAM campus, combining academic research, citizen practices, and the social economy.
+                    <span class="lato-black">Before founding Studio Murmur</span>, I worked in Montréal's financial sector as a portfolio advisor. After completing a Master's in Conservation focused on temporary use, I contributed to several pioneering initiatives in urban innovation and heritage. I co-founded the Festival Vivre le Patrimoine (2015–2016), a citizen-led event that showcased Montréal's heritage through a living and inclusive lens. In 2016, I co-founded Entremise, a social-economy non-profit that brought temporary use into Montréal and Québec public policy. As Director General of Entremise, I built a sustainable hybrid model for growth and co-led the Young Project (2017–2018), the first proof of concept for temporary use in collaboration with the City of Montréal, which enabled more than 35 organizations to occupy a former public warehouse in Griffintown. In 2017, I coordinated the Conseil jeunesse de Montréal's strategic brief on vacant space and co-organized the Symposium on Temporary Uses, both of which equipped institutional and cultural stakeholders with practical tools. From 2019 to 2021, I also contributed to the creation of Espace Ville Autrement, a flagship site for urban experimentation on the UQAM campus that combines academic research, citizen practices, and the social economy.
                 </p>
             </div>
 
@@ -371,6 +373,19 @@
                         </tr>
                     </thead>
                     <tbody>
+                          <tr class="clickable-row">
+                              <td>Ongoing</td>
+                              <td>French-language consultant and local positioning (Montréal)</td>
+                              <td>Tapestry Community Capital</td>
+                          </tr>
+                        <tr class="dropdown-row">
+                            <td colspan="3">
+                                <div class="table-dropdown-content">
+                                    <p>To strengthen Tapestry's presence in Montréal by providing French-language support and local positioning for partnerships, clients, and community stakeholders.</p>
+                                </div>
+                            </td>
+                        </tr>
+
                           <tr class="clickable-row">
                               <td>Ongoing</td>
                               <td>Values-oriented revenue diversification strategy</td>
@@ -481,17 +496,40 @@
 
         // Table row dropdown functionality
         document.querySelectorAll('.clickable-row').forEach(row => {
-            row.addEventListener('click', () => {
-                const dropdown = row.nextElementSibling;
-                
+            const dropdown = row.nextElementSibling;
+            let hideTimeout;
+
+            const showDropdown = () => {
+                clearTimeout(hideTimeout);
+
                 // Close all other dropdowns
                 document.querySelectorAll('.dropdown-row').forEach(dr => {
-                    if (dr !== dropdown) dr.classList.remove('active');
+                    if (dr !== dropdown) {
+                        dr.classList.remove('active');
+                        dr.previousElementSibling?.classList.remove('hover-active');
+                    }
                 });
 
-                // Toggle this dropdown
-                dropdown.classList.toggle('active');
+                dropdown.classList.add('active');
+                row.classList.add('hover-active');
+            };
+
+            const hideDropdown = () => {
+                hideTimeout = setTimeout(() => {
+                    dropdown.classList.remove('active');
+                    row.classList.remove('hover-active');
+                }, 150);
+            };
+
+            row.addEventListener('mouseenter', showDropdown);
+            row.addEventListener('mouseleave', hideDropdown);
+
+            dropdown.addEventListener('mouseenter', () => {
+                clearTimeout(hideTimeout);
+                showDropdown();
             });
+
+            dropdown.addEventListener('mouseleave', hideDropdown);
         });
     </script>
 </body>
